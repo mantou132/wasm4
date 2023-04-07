@@ -1,4 +1,4 @@
-export const DEBUG = import.meta.env.DEV;
+export const DEBUG = false;
 
 export const WIDTH = 160;
 export const HEIGHT = 160;

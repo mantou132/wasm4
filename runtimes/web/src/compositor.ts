@@ -82,7 +82,7 @@ export class WebGLCompositor {
             varying vec2 framebufferCoord;
 
             void main () {
-                framebufferCoord = pos*vec2(0.5, -0.5) + 0.5;
+                framebufferCoord = pos*vec2(0.5, 0.5) + 0.5;
                 gl_Position = vec4(pos, 0, 1);
             }
         `);

@@ -65,23 +65,15 @@ function polyblep (phase: number, phaseInc: number) {
     }
 }
 
-class APUProcessor extends AudioWorkletProcessor {
+export class APUProcessor {
     time: number;
     channels: Channel[];
 
     constructor () {
-        super();
-
         this.time = 0;
         this.channels = new Array(4);
         for (let ii = 0; ii < 4; ++ii) {
             this.channels[ii] = new Channel();
-        }
-
-        if (this.port != null) {
-            this.port.onmessage = (event: MessageEvent<[number, number, number, number]>) => {
-                this.tone(...event.data);
-            };
         }
     }
 
@@ -247,4 +239,3 @@ class APUProcessor extends AudioWorkletProcessor {
     }
 }
 
-registerProcessor("wasm4-apu", APUProcessor as unknown as AudioWorkletProcessorConstructor);

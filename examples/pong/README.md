@@ -17,7 +17,6 @@ A [pong](https://en.wikipedia.org/wiki/Pong) game cartridge written in [rust].
 cargo build --release
 ```
 
-
 #### Reduce bundle size after compilation
 
 Use [wasm-opt](https://github.com/WebAssembly/binaryen) to reduce cartridge size after `rustc` compilation:
@@ -41,4 +40,10 @@ cargo build --release --features dev_tools
 
 ```bash
 w4 run target/wasm32-unknown-unknown/release/pong_w4.wasm
+```
+
+### Server
+
+```bash
+npx esbuild target/wasm32-unknown-unknown/release/pong.wasm --outdir=dist --serve --loader:.wasm=file --asset-names=index.wasm4
 ```

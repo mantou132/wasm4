@@ -1,6 +1,6 @@
 import * as constants from "./constants";
 import * as z85 from "./z85";
-import { APU } from "./apu";
+import { APUProcessor } from "./apu-worklet";
 import { Framebuffer } from "./framebuffer";
 import { WebGLCompositor } from "./compositor";
 import * as devkit from "./devkit";
@@ -8,7 +8,7 @@ import * as devkit from "./devkit";
 export class Runtime {
     canvas: HTMLCanvasElement;
     memory: WebAssembly.Memory;
-    apu: any;
+    apu: APUProcessor;
     compositor: WebGLCompositor;
     data: DataView;
     framebuffer: Framebuffer;
@@ -40,7 +40,7 @@ export class Runtime {
 
         this.compositor = new WebGLCompositor(gl);
         
-        this.apu = new APU();
+        this.apu = new APUProcessor();
 
         this.diskName = diskName;
         this.diskBuffer = new ArrayBuffer(constants.STORAGE_SIZE);
@@ -70,7 +70,6 @@ export class Runtime {
     }
 
     async init () {
-        await this.apu.init();
     }
 
     setMouse (x: number, y: number, buttons: number) {
@@ -92,11 +91,11 @@ export class Runtime {
     }
 
     unlockAudio () {
-        this.apu.unlockAudio();
+
     }
 
     pauseAudio() {
-        this.apu.pauseAudio();
+
     }
 
     reset (zeroMemory?: boolean) {
@@ -121,7 +120,7 @@ export class Runtime {
         this.wasm = null;
 
         if (wasmBuffer.byteLength > limit) {
-            if (import.meta.env.DEV) {
+            if (constants.DEBUG) {
                 if (!this.warnedFileSize) {
                     this.warnedFileSize = true;
                     this.print(`Warning: Cart is larger than ${limit} bytes. Ensure the release build of your cart is small enough to be bundled.`);
